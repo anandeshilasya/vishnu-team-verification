@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team Verification Protocol</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;600;800&display=swap');
+
+*{box-sizing:border-box}
+body{
+  margin:0; min-height:100vh; overflow:hidden;
+  background:#05060a; color:#f5f5f5;
+  font-family:Inter,Arial,sans-serif;
+}
+body:before{
+  content:""; position:fixed; inset:0; pointer-events:none; opacity:.12;
+  background:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),
+             linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);
+  background-size:40px 40px;
+}
+.screen{
+  min-height:100vh; display:none; place-items:center; padding:28px;
+  position:relative; text-align:center;
+}
+.screen.active{display:grid}
+.card{width:min(760px,94vw); padding:38px 28px}
+.kicker{
+  font:700 12px "Space Mono",monospace; letter-spacing:4px;
+  color:#8d93a3; margin-bottom:22px;
+}
+h1{font-size:clamp(32px,7vw,72px); line-height:.98; margin:0 0 22px}
+h2{font-size:clamp(25px,5vw,46px); margin:10px 0 18px}
+p{color:#b8bdca; line-height:1.7; font-size:16px}
+.equation{
+  font:700 clamp(16px,3vw,26px) "Space Mono",monospace;
+  margin:28px 0; color:#e9ebf0;
+}
+.typing{font-family:"Space Mono",monospace; color:#b8bdca; min-height:24px}
+.buttons{display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-top:30px}
+button{
+  border:1px solid #555b6d; background:#11131a; color:#fff;
+  padding:15px 22px; border-radius:10px; cursor:pointer;
+  font:700 13px "Space Mono",monospace; transition:.2s;
+}
+button:hover{transform:translateY(-2px); border-color:#fff; background:#191c25}
+.yes{border-color:#58d68d}.no{border-color:#e77d8a}
+.big{font-size:18px; padding:17px 28px}
+.back{
+  margin-top:28px;
+  border-color:#343947;
+  color:#8d93a3;
+  background:transparent;
+}
+.back:hover{color:#fff;border-color:#777d8c}
+.progress{height:4px;background:#1a1d26;border-radius:99px;overflow:hidden;margin:30px auto;max-width:500px}
+.progress span{display:block;height:100%;width:0;background:#f5f5f5;transition:width 1.5s}
+.verdict{
+  border:1px solid #303542; border-radius:18px; padding:25px;
+  background:rgba(255,255,255,.025); margin:25px 0;
+}
+.green{color:#71e6a0}.pink{color:#ff9cab}.muted{color:#777d8c}
+.glitch{animation:glitch .15s infinite}
+@keyframes glitch{0%{transform:translate(0)}33%{transform:translate(2px,-1px)}66%{transform:translate(-2px,1px)}100%{transform:translate(0)}}
+.fade{animation:fade .7s ease both}
+@keyframes fade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.confetti{
+ position:fixed; width:7px;height:7px;top:-10px;animation:fall 3s linear forwards;
+}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+.small{font-size:12px;font-family:"Space Mono",monospace;color:#6f7584}
+</style>
+</head>
+<body>
+
+<section id="intro" class="screen active">
+  <div class="card fade">
+    <div class="kicker">TEAM VERIFICATION PROTOCOL // v4.7∞</div>
+    <h1>Current Team<br>Verification</h1>
+    <p id="introText">A statement has been detected.</p>
+    <div class="equation">“I’m staying in the current team.”</div>
+    <p>Unfortunately, <b>CURRENT TEAM</b> is mathematically ambiguous.</p>
+    <button class="big" onclick="showQuestion()">BEGIN INVESTIGATION →</button>
+  </div>
+</section>
+
+<section id="question" class="screen">
+  <div class="card fade">
+    <div class="kicker">IDENTITY RESOLUTION REQUIRED</div>
+    <h2>Vishnu, please clarify.</h2>
+    <p>By “current team”, do you mean...</p>
+    <div class="buttons">
+      <button class="yes big" onclick="yesPath()">🟢 OUR TEAM</button>
+      <button class="no big" onclick="noPath()">🔴 OTHER GANG</button>
+    </div>
+    <p class="small">Your answer will be processed with unnecessary mathematical seriousness.</p>
+  </div>
+</section>
+
+<section id="loading" class="screen">
+  <div class="card">
+    <div class="kicker">CALCULATING</div>
+    <h2 id="loadTitle">Processing your decision...</h2>
+    <div class="equation" id="eq">VISHNU × TEAM = ?</div>
+    <div class="progress"><span id="bar"></span></div>
+    <div class="typing" id="log"></div>
+  </div>
+</section>
+
+<section id="yesResult" class="screen">
+  <div class="card fade">
+    <div class="kicker green">VERIFICATION COMPLETE</div>
+    <h1 class="green">TEAMMATE<br>CONFIRMED.</h1>
+    <div class="verdict">
+      <div class="equation">VISHNU × US = 100%</div>
+      <p>We are <b>grateful</b> and extremely fortunate to be working with <b>Mr. Vishnu</b>.</p>
+      <p>Thank you for showering us with this blessing of your presence. 🙏😭</p>
+      <p class="green"><b>Your presence has been mathematically verified.</b></p>
+      <p>Microsoft Hackathon Team: <b>LOCKED 🔒</b></p>
+    </div>
+    <h2>LET'S COOK. 🔥</h2>
+    <button onclick="show('question')">← BACK TO QUESTION</button>
+    <p class="small">No further appeals will be mathematically necessary.</p>
+  </div>
+</section>
+
+<section id="noResult" class="screen">
+  <div class="card fade">
+    <div class="kicker pink">DECISION RECORDED</div>
+    <h1>Ah.<br>We understand. 🥲</h1>
+    <div class="verdict">
+      <p>The mathematical universe has spoken.</p>
+      <h2 class="pink">NO WORRIES, MR. VISHNU!</h2>
+      <p>Maybe not this time...</p>
+      <p>But we're definitely looking forward to <b>working together another time.</b></p>
+      <p>Until then, may your code compile, your bugs disappear, and your teammates actually show up. 😭</p>
+    </div>
+    <div class="buttons">
+      <button onclick="location.reload()">RETURN TO REALITY →</button>
+      <button onclick="show('question')">← BACK TO QUESTION</button>
+    </div>
+    <p class="small">P.S. The invitation remains emotionally valid. 😌</p>
+  </div>
+</section>
+
+<script>
+const $ = id => document.getElementById(id);
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+}
+function showQuestion(){ show('question'); }
+
+function animateLoading(done, other=false){
+  show('loading');
+  $('bar').style.width='0%';
+  $('eq').textContent = other ? 'CURRENT TEAM = OTHER GANG ?' : 'VISHNU × US = ?';
+  const logs = other
+    ? ['Parsing “other gang”...','Checking previous statement...','Consulting mathematical ethics...','Result approaching...']
+    : ['Parsing “our team”...','Checking compatibility...','Calculating hackathon probability...','Result approaching...'];
+  let i=0;
+  const timer=setInterval(()=>{
+    $('bar').style.width=((i+1)*25)+'%';
+    $('log').textContent=logs[i];
+    i++;
+    if(i===logs.length){clearInterval(timer);setTimeout(done,700)}
+  },650);
+}
+function yesPath(){
+  animateLoading(()=>{show('yesResult'); confetti();});
+}
+function noPath(){
+  animateLoading(()=>{show('noResult');},true);
+}
+function confetti(){
+  for(let i=0;i<80;i++){
+    const c=document.createElement('i');
+    c.className='confetti';
+    c.style.left=Math.random()*100+'vw';
+    c.style.animationDelay=Math.random()*1.4+'s';
+    c.style.background=['#71e6a0','#fff','#ff9cab','#8da2ff'][Math.floor(Math.random()*4)];
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),4500);
+  }
+}
+</script>
+</body>
+</html>
